@@ -9,12 +9,22 @@ async function getProducts() {
     next: { revalidate: 60 }
   });
   const data = await res.json();
-  return data.data || [];
+  
+  return (data.data || []).map((p: any) => ({
+    id: String(p.id),
+    name: p.name,
+    category: p.category,
+    price: p.offer_price ? Number(p.offer_price) : Number(p.price),
+    originalPrice: p.offer_price ? Number(p.price) : undefined,
+    rating: 4,
+    image: p.images?.[0] || "/placeholder.png",
+    badges: p.offer_price ? ["Sale"] : p.stock === 0 ? ["Out of stock"] : undefined,
+  }));
 }
 
 export default async function Home() {
   const products = await getProducts();
-  
+
   return (
     <div className="w-full flex flex-col pt-0">
       <HeroBanner />
