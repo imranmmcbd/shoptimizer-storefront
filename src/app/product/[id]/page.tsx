@@ -34,11 +34,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
   // Build the info struct
   const productInfoStruct = {
+    id: product.id,
     name: product.name,
     brand: product.brand,
     price: product.price,
     originalPrice: product.originalPrice,
-    badges: product.badges
+    badges: product.badges,
+    image: product.image
   };
 
   return (

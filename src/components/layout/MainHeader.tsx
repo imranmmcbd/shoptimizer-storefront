@@ -1,7 +1,12 @@
+"use client";
+
 import { Search, User, Layers, ShoppingCart, Activity } from "lucide-react";
 import Link from "next/link";
+import { useCart } from "@/lib/CartContext";
 
 export default function MainHeader() {
+  const { totalItems, totalAmount } = useCart();
+
   return (
     <div className="bg-white dark:bg-[#121212] border-b border-gray-100 dark:border-zinc-800">
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -10,7 +15,7 @@ export default function MainHeader() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
             <Activity className="w-8 h-8 text-shopOrange" />
-            <span className="text-2xl font-black tracking-tight uppercase">Shoptimizer</span>
+            <span className="text-2xl font-black tracking-tight uppercase text-zinc-900 dark:text-white">Shoptimizer</span>
           </Link>
 
           {/* Search Bar */}
@@ -47,9 +52,11 @@ export default function MainHeader() {
             <Link href="/cart" className="flex flex-col items-center gap-1 group text-sm font-medium text-gray-700 dark:text-gray-200">
               <div className="relative p-2 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-zinc-800 transition-colors">
                 <ShoppingCart className="w-5 h-5" />
-                <span className="absolute top-0 right-0 w-4 h-4 bg-shopGreen text-white text-[10px] items-center justify-center flex rounded-full border-2 border-white dark:border-[#121212]">0</span>
+                <span className="absolute top-0 right-0 w-4 h-4 bg-shopGreen text-white text-[10px] items-center justify-center flex rounded-full border-2 border-white dark:border-[#121212]">{totalItems}</span>
               </div>
-              <span className="hidden lg:block text-xs font-bold">$0.00</span>
+              <span className="hidden lg:block text-xs font-bold text-zinc-900 dark:text-white">
+                ৳{totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </Link>
           </div>
 

@@ -1,20 +1,35 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ShoppingBag, CreditCard, Minus, Plus } from 'lucide-react';
+import { useCart } from '@/lib/CartContext';
 
 interface ProductInfoProps {
   product: {
+    id: string; // Ensure id is clearly passed
     name: string;
     brand?: string;
     price: number;
     originalPrice?: number;
     badges?: string[];
+    image: string; // Add image for cart
   };
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
+  const router = useRouter();
+  const { addItem } = useCart();
+
+  const handleAddToCart = () => {
+    addItem(product, quantity);
+  };
+
+  const handleBuyNow = () => {
+    addItem(product, quantity);
+    router.push('/checkout');
+  };
 
   const increment = () => setQuantity(prev => prev + 1);
   const decrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
@@ -81,11 +96,17 @@ export default function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Action Buttons */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-        <button className="flex items-center justify-center gap-2 bg-shopOrange hover:bg-orange-600 text-white py-4 px-6 rounded-md font-bold text-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+        <button 
+          onClick={handleAddToCart}
+          className="flex items-center justify-center gap-2 bg-shopOrange hover:bg-orange-600 text-white py-4 px-6 rounded-md font-bold text-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+        >
           <ShoppingBag className="w-5 h-5" />
           ADD TO CART
         </button>
-        <button className="flex items-center justify-center gap-2 bg-[#1B2B32] hover:bg-zinc-900 text-white py-4 px-6 rounded-md font-bold text-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+        <button 
+          onClick={handleBuyNow}
+          className="flex items-center justify-center gap-2 bg-[#1B2B32] hover:bg-zinc-900 text-white py-4 px-6 rounded-md font-bold text-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+        >
           <CreditCard className="w-5 h-5" />
           BUY NOW
         </button>

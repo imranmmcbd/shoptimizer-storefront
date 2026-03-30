@@ -1,5 +1,8 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCart } from '@/lib/CartContext';
 
 interface Product {
   id: string;
@@ -15,6 +18,8 @@ interface RelatedProductsProps {
 }
 
 export default function RelatedProducts({ products }: RelatedProductsProps) {
+  const { addItem } = useCart();
+
   return (
     <div className="mt-16 w-full">
       <div className="flex justify-between items-center mb-6">
@@ -58,7 +63,10 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
                 )}
               </div>
 
-              <button className="w-full py-2 border border-shopOrange text-shopOrange hover:bg-shopOrange hover:text-white rounded-md font-bold transition-colors text-sm flex justify-center items-center gap-2 mt-auto">
+              <button 
+                onClick={() => addItem(product)}
+                className="w-full py-2 border border-shopOrange text-shopOrange hover:bg-shopOrange hover:text-white rounded-md font-bold transition-colors text-sm flex justify-center items-center gap-2 mt-auto"
+              >
                 <span className="text-lg leading-none mb-1">+</span> Add To Cart
               </button>
             </div>

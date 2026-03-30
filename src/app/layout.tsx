@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "A premium headless Next.js e-commerce storefront attached to a Laravel backend.",
 };
 
+import { CartProvider } from "@/lib/CartContext";
+import FloatingCart from "@/components/cart/FloatingCart";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -18,12 +21,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen flex flex-col antialiased bg-zinc-50 dark:bg-zinc-950`}>
-        <Header />
-        <main className="flex-1 w-full relative z-10 flex flex-col items-center">
-          {children}
-        </main>
-        <Footer />
+      <body 
+        className={`${inter.className} min-h-screen flex flex-col antialiased bg-zinc-50 dark:bg-zinc-950`}
+        suppressHydrationWarning
+      >
+        <CartProvider>
+          <Header />
+          <main className="flex-1 w-full relative z-10 flex flex-col items-center">
+            {children}
+          </main>
+          <Footer />
+          <FloatingCart />
+        </CartProvider>
       </body>
     </html>
   );
