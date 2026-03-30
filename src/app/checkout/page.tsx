@@ -53,32 +53,61 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      const orderId = `SHP-${new Date().getFullYear()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-      const newOrder = {
-        orderId,
+   try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          customer_name: formData.name,
+          customer_phone: formData.phone,
+          customer_email: formData.email,
+          district: formData.district,
+          thana: formData.thana,
+          address: formData.address,
+          notes: formData.notes,
+          shipping_fee: shippingFee,
+          total_amount: totalAmount + shippingFee,
+          items: items.map(item => ({
+            product_id: item.id,
+            product_name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Order failed");
+
+      // Save for success page
+      localStorage.setItem("shoptimizer_latest_order", JSON.stringify({
+        orderId: data.order_id || data.id,
         items,
         totalAmount: totalAmount + shippingFee,
         shippingFee,
         shippingDetails: formData,
         status: "placed",
         createdAt: new Date().toISOString()
-      };
+      }));
 
-      // Save to all orders
-      const existingOrders = JSON.parse(localStorage.getItem("shoptimizer_orders") || "[]");
-      localStorage.setItem("shoptimizer_orders", JSON.stringify([newOrder, ...existingOrders]));
-
-      // Save as latest order for the success page
-      localStorage.setItem("shoptimizer_latest_order", JSON.stringify(newOrder));
-
-      // Clear cart
       clearCart();
-
-      // Redirect
       router.push("/order-success");
-    }, 1500);
+
+    } catch (error) {
+      alert("Failed to place order. Please try again.");
+      console.error(error);
+    }
+```
+
+---
+
+Now check your Laravel `OrderController` — can you paste the `store()` method from:
+```
+app/Http/Controllers/Api/OrderController.php
   };
 
   if (!isLoaded) return null;
