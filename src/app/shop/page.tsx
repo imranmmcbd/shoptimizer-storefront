@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import ProductCard from "@/components/home/ProductCard";
+import ProductCard, { Product } from "@/components/home/ProductCard";
 import ShopSidebar from "@/components/shop/ShopSidebar";
 import ShopHeader from "@/components/shop/ShopHeader";
-import { Search, SlidersHorizontal, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 
 export default function ShopPage() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [sortBy, setSortBy] = useState("newest");
@@ -18,7 +18,7 @@ export default function ShopPage() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`)
       .then(r => r.json())
       .then(data => {
-        const mapped = (data.data || []).map((p: any) => ({
+        const mapped: Product[] = (data.data || []).map((p: any) => ({
           id: String(p.id),
           name: p.name,
           category: p.category,
@@ -83,7 +83,7 @@ export default function ShopPage() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[60%] bg-shopBlue rounded-full blur-[120px]"></div>
         </div>
         <div className="max-w-4xl mx-auto flex flex-col items-center gap-8 relative z-10">
-          <h2 className="text-white text-4xl m:text-6xl font-black text-center tracking-tighter uppercase">
+          <h2 className="text-white text-4xl sm:text-6xl font-black text-center tracking-tighter uppercase">
             Find Your <span className="text-shopOrange">Perfect</span> Match
           </h2>
           <div className="w-full relative">
