@@ -14,11 +14,10 @@ async function getProducts() {
     id: String(p.id),
     name: p.name,
     category: p.category,
-    price: p.offer_price ? Number(p.offer_price) : Number(p.price),
-    originalPrice: p.offer_price ? Number(p.price) : undefined,
+    price: parseFloat(p.offer_price ?? p.price),
+    originalPrice: p.offer_price ? parseFloat(p.price) : undefined,
     rating: 4,
     image: p.images?.[0] || "/placeholder.png",
-    badges: p.offer_price ? ["Sale"] : p.stock === 0 ? ["Out of stock"] : undefined,
   }));
 }
 
