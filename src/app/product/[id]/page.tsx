@@ -7,6 +7,8 @@ import ReviewSection from '@/components/product/ReviewSection';
 import MoreProductsSidebar from '@/components/product/MoreProductsSidebar';
 import RelatedProducts from '@/components/product/RelatedProducts';
 
+const BACKEND_URL = 'https://backend.ibadateshop.com';
+
 async function getProduct(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
     next: { revalidate: 60 }
@@ -23,6 +25,10 @@ async function getAllProducts() {
   return data.data || [];
 }
 
+function fixImageUrl(img: string) {
+  return img.startsWith('http') ? img : `${BACKEND_URL}/storage/${img}`;
+}
+
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -32,6 +38,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   ]);
 
   if (!product) return notFound();
+
+  // Fix image URLs
+  const productImages = (product.images || []).map(fixImageUrl);
 
   const sidebarProducts = allProducts
     .filter((p: any) => String(p.id) !== id)
@@ -78,7 +87,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     price: parseFloat(product.offer_price ?? product.price),
     originalPrice: product.offer_price ? parseFloat(product.price) : undefined,
     badges: [],
-    image: product.images?.[0] || "/placeholder.png",
+    image: productImages[0] || "/placeholder.png",
   };
 
   return (
@@ -89,7 +98,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div className="flex-1 w-full min-w-0">
           <div className="flex flex-col lg:flex-row gap-8 bg-white dark:bg-zinc-950 p-6 md:p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
             <div className="w-full lg:w-1/2 min-w-0">
-              <ProductGallery images={product.images?.length ? product.images : ["/placeholder.png"]} />
+              <ProductGallery images={productImages.length ? productImages : ["/placeholder.png"]} />
             </div>
             <div className="w-full lg:w-1/2 min-w-0 flex flex-col justify-start">
               <ProductInfo product={productInfoStruct} />
@@ -97,8 +106,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           </div>
 
           <div className="w-full mt-8">
-            <ProductTabs 
-              description={product.description?.replace(/<[^>]*>/g, '') || 'No description available.'} 
+            <ProductTabs
+              description={product.description?.replace(/<[^>]*>/g, '') || 'No description available.'}
               reviewsCount={0}
             >
               <ReviewSection stats={mockReviewStats} />
