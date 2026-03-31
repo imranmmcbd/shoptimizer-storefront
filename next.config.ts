@@ -7,14 +7,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'backend.ibadateshop.com',
         port: '',
-        pathname: '/storage/**',
+        pathname: '/**',
       },
     ],
   },
-  // Keep your Turbopack settings
   turbopack: {
     root: __dirname,
   },
 };
-
-export default nextConfig;
