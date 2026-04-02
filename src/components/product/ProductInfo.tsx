@@ -4,12 +4,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShoppingBag, CreditCard, Minus, Plus } from 'lucide-react';
 import { useCart } from '@/lib/CartContext';
+import Link from 'next/link';
 
 interface ProductInfoProps {
   product: {
     id: string;
     name: string;
     brand?: string;
+    category?: {
+      id: number | string;
+      name: string;
+    };
     price: number;
     originalPrice?: number;
     badges?: string[];
@@ -41,14 +46,20 @@ export default function ProductInfo({ product }: ProductInfoProps) {
   return (
     <div className="flex flex-col gap-4">
 
-      {/* Title & Brand */}
+      {/* Title & Category */}
       <div>
         <h1 className="text-xl md:text-2xl font-bold text-shopDark leading-snug">
           {product.name}
         </h1>
-        {product.brand && (
+        {product.category && (
           <p className="text-sm text-shopMuted mt-1">
-            Brand: <span className="font-semibold text-shopDark">{product.brand}</span>
+            Category:{' '}
+            <Link
+              href={`/products?category=${product.category.id}`}
+              className="font-semibold text-shopOrange hover:underline transition-colors"
+            >
+              {product.category.name}
+            </Link>
           </p>
         )}
       </div>
