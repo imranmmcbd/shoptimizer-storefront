@@ -27,14 +27,12 @@ function TrackOrderContent() {
   const handleSearch = async (id: string, phone: string) => {
     setIsSearching(true);
     setError("");
-
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/orders/track?order_number=${id}&phone=${phone}`,
         { headers: { Accept: "application/json" } }
       );
       const data = await res.json();
-
       if (!res.ok || !data.order) {
         setError("Order not found. Please check your tracking ID and phone number.");
         setFoundOrder(null);
@@ -69,148 +67,153 @@ function TrackOrderContent() {
 
   const onSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (orderId && phoneNumber) {
-      handleSearch(orderId, phoneNumber);
-    }
+    if (orderId && phoneNumber) handleSearch(orderId, phoneNumber);
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-12 min-h-screen">
-      <div className="flex flex-col gap-2 mb-10">
-        <Link href="/" className="flex items-center gap-2 text-zinc-500 hover:text-shopOrange transition-colors text-sm font-bold uppercase tracking-widest group">
-          <MoveLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back to Shop
-        </Link>
-        <h1 className="text-4xl lg:text-5xl font-black text-zinc-900 dark:text-zinc-50 tracking-tighter uppercase">
-          Track Your <span className="text-shopOrange">Order</span>
-        </h1>
-      </div>
+    <div className="w-full bg-shopGray min-h-screen py-6">
+      <div className="max-w-2xl mx-auto px-4">
 
-      <div className="bg-white dark:bg-zinc-950 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl mb-12">
-        <form onSubmit={onSearchSubmit} className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-          <div className="md:col-span-5 flex flex-col gap-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Order Tracking ID</label>
-            <div className="relative">
-              <Package className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
-              <input
-                type="text"
-                value={orderId}
-                onChange={(e) => setOrderId(e.target.value)}
-                placeholder="e.g. ORD-XXXXXXXX"
-                className="w-full pl-12 pr-4 py-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-shopOrange focus:border-transparent transition-all font-bold tracking-wider placeholder:font-medium uppercase"
-                required
-              />
+        {/* Header */}
+        <div className="mb-5">
+          <Link href="/" className="flex items-center gap-1.5 text-shopMuted hover:text-shopOrange transition-colors text-xs font-medium uppercase tracking-wider mb-3">
+            <MoveLeft className="w-3.5 h-3.5" />
+            Back to Shop
+          </Link>
+          <h1 className="text-xl font-bold text-shopDark">Track Your Order</h1>
+        </div>
+
+        {/* Search Form */}
+        <div className="bg-white p-5 rounded-xl border border-shopBorder mb-5">
+          <form onSubmit={onSearchSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium text-shopDark">Order Tracking ID</label>
+              <div className="relative">
+                <Package className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-shopMuted" />
+                <input
+                  type="text"
+                  value={orderId}
+                  onChange={(e) => setOrderId(e.target.value)}
+                  placeholder="e.g. ORD-XXXXXXXX"
+                  className="w-full pl-9 pr-3 py-2.5 border border-shopBorder rounded-lg bg-shopGray focus:outline-none focus:ring-2 focus:ring-shopOrange/30 focus:border-shopOrange transition-all text-sm"
+                  required
+                />
+              </div>
             </div>
-          </div>
-          <div className="md:col-span-5 flex flex-col gap-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-1">Phone Number</label>
-            <div className="relative">
-              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
-              <input
-                type="tel"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="01XXXXXXXXX"
-                className="w-full pl-12 pr-4 py-4 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-zinc-50 dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-shopOrange focus:border-transparent transition-all font-bold tracking-wider placeholder:font-medium"
-                required
-              />
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium text-shopDark">Phone Number</label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-shopMuted" />
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="01XXXXXXXXX"
+                  className="w-full pl-9 pr-3 py-2.5 border border-shopBorder rounded-lg bg-shopGray focus:outline-none focus:ring-2 focus:ring-shopOrange/30 focus:border-shopOrange transition-all text-sm"
+                  required
+                />
+              </div>
             </div>
-          </div>
-          <div className="md:col-span-2">
+
             <button
               type="submit"
               disabled={isSearching}
-              className="w-full bg-shopOrange hover:bg-orange-600 disabled:bg-zinc-400 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg hover:shadow-orange-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 h-[58px]"
+              className="w-full bg-shopOrange hover:bg-orange-600 disabled:bg-gray-400 text-white py-2.5 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2"
             >
               {isSearching ? (
-                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
               ) : (
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4" />
               )}
-              SEARCH
+              Search
             </button>
-          </div>
-        </form>
-        {error && <p className="text-red-500 text-xs font-bold mt-4 uppercase tracking-wider ml-1">{error}</p>}
-      </div>
+          </form>
 
-      {foundOrder && (
-        <div className="animate-in fade-in slide-in-from-bottom-5 duration-700">
-          <div className="bg-white dark:bg-zinc-950 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl mb-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 border-b border-zinc-100 dark:border-zinc-800 pb-8">
-              <div>
-                <h2 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 tracking-tighter uppercase leading-none mb-2">
-                  Status for <span className="text-shopOrange">{foundOrder.orderId}</span>
-                </h2>
+          {error && (
+            <p className="text-red-500 text-xs mt-3">{error}</p>
+          )}
+        </div>
+
+        {/* Results */}
+        {foundOrder && (
+          <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-3 duration-500">
+
+            {/* Status Card */}
+            <div className="bg-white p-5 rounded-xl border border-shopBorder">
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-shopBorder">
+                <div>
+                  <p className="text-xs text-shopMuted uppercase tracking-wider">Order ID</p>
+                  <p className="text-sm font-bold text-shopOrange">{foundOrder.orderId}</p>
+                </div>
+                <div className="bg-shopOrange/10 border border-shopOrange/20 px-3 py-1 rounded-full">
+                  <span className="text-xs font-semibold text-shopOrange capitalize">
+                    {foundOrder.status}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 mb-4">
+                <Clock className="w-3.5 h-3.5 text-shopMuted" />
+                <span className="text-xs text-shopMuted">Last update: Recent</span>
+              </div>
+              <TrackingTimeline currentStatus={foundOrder.status} />
+            </div>
+
+            {/* Delivery Address */}
+            <div className="bg-white p-5 rounded-xl border border-shopBorder">
+              <div className="flex items-center gap-2 mb-3">
+                <MapPin className="w-4 h-4 text-shopOrange" />
+                <span className="text-xs font-bold text-shopDark uppercase tracking-wider">Delivery Address</span>
+              </div>
+              <p className="text-sm font-semibold text-shopDark">{foundOrder.shippingDetails.name}</p>
+              <p className="text-xs text-shopMuted mt-0.5">{foundOrder.shippingDetails.phone}</p>
+              <p className="text-xs text-shopMuted mt-1.5 leading-relaxed">
+                {foundOrder.shippingDetails.address},<br />
+                {foundOrder.shippingDetails.thana}, {foundOrder.shippingDetails.district}
+              </p>
+            </div>
+
+            {/* Order Items */}
+            <div className="bg-white p-5 rounded-xl border border-shopBorder">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-zinc-400" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Last update: Recent</span>
+                  <Package className="w-4 h-4 text-shopOrange" />
+                  <span className="text-xs font-bold text-shopDark uppercase tracking-wider">Order Items</span>
                 </div>
-              </div>
-              <div className="bg-shopOrange/10 border border-shopOrange/20 px-4 py-2 rounded-full">
-                <span className="text-xs font-black uppercase tracking-widest text-shopOrange">Current Status: {foundOrder.status}</span>
-              </div>
-            </div>
-            <TrackingTimeline currentStatus={foundOrder.status} />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-zinc-900 text-white p-8 rounded-2xl border border-zinc-800 shadow-xl flex flex-col gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-shopOrange" />
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Delivery Address</span>
-              </div>
-              <div>
-                <h4 className="text-xl font-bold mb-1">{foundOrder.shippingDetails.name}</h4>
-                <p className="text-zinc-400 font-medium">{foundOrder.shippingDetails.phone}</p>
-                <p className="text-zinc-400 mt-4 leading-relaxed font-medium">
-                  {foundOrder.shippingDetails.address},<br />
-                  {foundOrder.shippingDetails.thana}, {foundOrder.shippingDetails.district}
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-zinc-950 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl flex flex-col gap-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-900 rounded-full flex items-center justify-center">
-                    <Package className="w-5 h-5 text-shopBlue" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Order Items</span>
-                </div>
-                <span className="text-xs font-black text-zinc-900 dark:text-zinc-100 uppercase tracking-widest">
+                <span className="text-xs font-bold text-shopDark">
                   Total: ৳{foundOrder.totalAmount.toLocaleString()}
                 </span>
               </div>
-              <div className="flex flex-col gap-4 overflow-y-auto max-h-[160px] pr-2 no-scrollbar">
+              <div className="flex flex-col gap-2">
                 {foundOrder.items.map((item: any, idx: number) => (
-                  <div key={idx} className="flex justify-between items-center text-sm border-b border-zinc-50 dark:border-zinc-800 pb-3 last:border-0 last:pb-0">
-                    <span className="font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
+                  <div key={idx} className="flex justify-between items-center text-sm pb-2 border-b border-shopBorder last:border-0 last:pb-0">
+                    <span className="text-shopText">
                       {item.name}
-                      <span className="text-[10px] bg-zinc-100 dark:bg-zinc-900 px-2 py-1 rounded-md text-zinc-500 uppercase tracking-widest">x{item.quantity}</span>
+                      <span className="text-xs text-shopMuted ml-1">x{item.quantity}</span>
                     </span>
-                    <span className="font-black text-zinc-900 dark:text-zinc-50">৳{(item.price * item.quantity).toLocaleString()}</span>
+                    <span className="font-semibold text-shopDark">
+                      ৳{(item.price * item.quantity).toLocaleString()}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      )}
 
-      {!foundOrder && !isSearching && !error && (
-        <div className="flex flex-col items-center justify-center py-20 text-center gap-4 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-          <div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-900 rounded-full flex items-center justify-center mb-2">
-            <Truck className="w-10 h-10 text-zinc-400" />
           </div>
-          <div>
-            <h3 className="text-lg font-black uppercase tracking-widest text-zinc-800 dark:text-zinc-200">Enter order details above</h3>
-            <p className="text-xs font-medium text-zinc-500">Check your email or SMS for the tracking information.</p>
+        )}
+
+        {/* Empty State */}
+        {!foundOrder && !isSearching && !error && (
+          <div className="flex flex-col items-center justify-center py-16 text-center gap-3">
+            <div className="w-14 h-14 bg-white border border-shopBorder rounded-full flex items-center justify-center">
+              <Truck className="w-6 h-6 text-shopMuted" />
+            </div>
+            <p className="text-sm font-medium text-shopDark">Enter your order details above</p>
+            <p className="text-xs text-shopMuted">Check your SMS for tracking information.</p>
           </div>
-        </div>
-      )}
+        )}
+
+      </div>
     </div>
   );
 }
@@ -218,8 +221,8 @@ function TrackOrderContent() {
 export default function TrackOrderPage() {
   return (
     <Suspense fallback={
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-shopOrange"></div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-shopOrange"></div>
       </div>
     }>
       <TrackOrderContent />
