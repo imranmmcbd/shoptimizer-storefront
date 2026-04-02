@@ -12,7 +12,8 @@ export default function FloatingCart() {
   return (
     <Link
       href="/cart"
-      className="fixed right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col items-center shadow-md rounded-l-lg overflow-hidden hover:scale-105 active:scale-95 transition-all w-[58px]"
+      style={{ top: '50vh', transform: 'translateY(-50%)' }}
+      className="fixed right-0 z-[60] flex flex-col items-center shadow-md rounded-l-lg overflow-hidden hover:scale-105 active:scale-95 transition-all w-[58px]"
     >
       {/* Icon + Count */}
       <div className="bg-shopOrange text-white w-full py-2 flex flex-col items-center gap-0.5">
