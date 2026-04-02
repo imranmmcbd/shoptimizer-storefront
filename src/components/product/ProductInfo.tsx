@@ -7,13 +7,13 @@ import { useCart } from '@/lib/CartContext';
 
 interface ProductInfoProps {
   product: {
-    id: string; // Ensure id is clearly passed
+    id: string;
     name: string;
     brand?: string;
     price: number;
     originalPrice?: number;
     badges?: string[];
-    image: string; // Add image for cart
+    image: string;
   };
 }
 
@@ -21,6 +21,10 @@ export default function ProductInfo({ product }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const { addItem } = useCart();
+
+  const savings = product.originalPrice
+    ? product.originalPrice - product.price
+    : null;
 
   const handleAddToCart = () => {
     addItem(product, quantity);
@@ -35,88 +39,97 @@ export default function ProductInfo({ product }: ProductInfoProps) {
   const decrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
+
       {/* Title & Brand */}
       <div>
-        <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight leading-tight">
+        <h1 className="text-xl md:text-2xl font-bold text-shopDark leading-snug">
           {product.name}
         </h1>
         {product.brand && (
-          <div className="flex items-center gap-2 mt-2">
-            <span className="text-zinc-500 text-sm">Brand:</span>
-            <span className="font-semibold text-zinc-800 dark:text-zinc-200">{product.brand}</span>
-          </div>
+          <p className="text-sm text-shopMuted mt-1">
+            Brand: <span className="font-semibold text-shopDark">{product.brand}</span>
+          </p>
         )}
       </div>
 
-      {/* Pricing Header */}
-      <div className="flex items-baseline gap-4 mt-2">
-        <span className="text-4xl font-extrabold text-shopOrange">
-          ৳{product.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      {/* Price */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <span className="text-2xl font-bold text-shopOrange">
+          ৳{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
         </span>
         {product.originalPrice && (
-          <span className="text-xl text-zinc-400 line-through">
-            ৳{product.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <span className="text-sm text-gray-400 line-through">
+            ৳{product.originalPrice.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </span>
         )}
-        {product.badges && product.badges.map(badge => (
-          <span key={badge} className="px-2 py-1 text-xs font-bold leading-none bg-shopGreen text-white rounded-md">
-            {badge}
+        {savings && (
+          <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded font-semibold">
+            Save ৳{savings.toLocaleString()}
           </span>
-        ))}
+        )}
       </div>
 
-      <hr className="border-zinc-200 dark:border-zinc-800" />
+      <hr className="border-shopBorder" />
 
       {/* Quantity Selector */}
-      <div className="flex items-center gap-4">
-        <span className="text-zinc-700 dark:text-zinc-300 font-medium">Quantity:</span>
-        <div className="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 overflow-hidden">
+      <div className="flex items-center gap-3">
+        <span className="text-sm text-shopText font-medium">Quantity:</span>
+        <div className="flex items-center border border-shopBorder rounded overflow-hidden">
           <button
             onClick={decrement}
-            className="w-10 h-10 flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-shopText hover:bg-shopGray transition-colors"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="w-3 h-3" />
           </button>
-          <input
-            type="number"
-            min="1"
-            value={quantity}
-            readOnly
-            className="w-12 h-10 text-center border-x border-zinc-200 dark:border-zinc-800 bg-transparent font-medium"
-          />
+          <span className="w-10 h-8 flex items-center justify-center border-x border-shopBorder text-sm font-semibold text-shopDark">
+            {quantity}
+          </span>
           <button
             onClick={increment}
-            className="w-10 h-10 flex items-center justify-center text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-shopText hover:bg-shopGray transition-colors"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3 h-3" />
           </button>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-        <button 
+      <div className="flex flex-col gap-2 mt-1">
+        <button
           onClick={handleAddToCart}
-          className="flex items-center justify-center gap-2 bg-shopOrange hover:bg-orange-600 text-white py-4 px-6 rounded-md font-bold text-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+          className="flex items-center justify-center gap-2 bg-shopOrange hover:bg-orange-600 text-white py-2.5 px-6 font-semibold text-sm transition-all active:scale-[0.98] rounded"
         >
-          <ShoppingBag className="w-5 h-5" />
+          <ShoppingBag className="w-4 h-4" />
           ADD TO CART
         </button>
-        <button 
+        <button
           onClick={handleBuyNow}
-          className="flex items-center justify-center gap-2 bg-[#1B2B32] hover:bg-zinc-900 text-white py-4 px-6 rounded-md font-bold text-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+          className="flex items-center justify-center gap-2 bg-shopDark hover:bg-zinc-800 text-white py-2.5 px-6 font-semibold text-sm transition-all active:scale-[0.98] rounded"
         >
-          <CreditCard className="w-5 h-5" />
+          <CreditCard className="w-4 h-4" />
           BUY NOW
         </button>
       </div>
 
-      {/* Extra Info */}
-      <div className="bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg mt-4 flex gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-        <p>100% Original Product</p>
-        <p>Cash on Delivery available</p>
+      {/* Trust Badges */}
+      <div className="flex items-center gap-4 border border-shopBorder rounded p-3 mt-1">
+        <div className="flex items-center gap-1.5 text-xs text-shopMuted">
+          <span>✅</span>
+          <span>100% Original</span>
+        </div>
+        <div className="w-px h-4 bg-shopBorder"></div>
+        <div className="flex items-center gap-1.5 text-xs text-shopMuted">
+          <span>🚚</span>
+          <span>Cash on Delivery</span>
+        </div>
+        <div className="w-px h-4 bg-shopBorder"></div>
+        <div className="flex items-center gap-1.5 text-xs text-shopMuted">
+          <span>↩</span>
+          <span>Easy Return</span>
+        </div>
       </div>
+
     </div>
   );
 }
