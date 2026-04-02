@@ -27,17 +27,17 @@ export default function FeaturedCategories() {
     <section className="max-w-7xl mx-auto px-4 py-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {categories.map((category, idx) => (
-          <div key={idx} className="relative group overflow-hidden bg-shopGray min-h-[220px] md:min-h-[280px] flex items-end">
+          <div key={idx} className="relative group overflow-hidden bg-gray-200 aspect-[4/3] md:aspect-auto md:min-h-[280px] flex items-end">
 
             {/* Background Image */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
+            <div className="absolute inset-0 z-0">
               <Image
                 src={category.image}
                 alt={category.title}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             </div>
 
             {/* Content */}
