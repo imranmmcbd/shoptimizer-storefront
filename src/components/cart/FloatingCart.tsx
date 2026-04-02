@@ -10,26 +10,26 @@ export default function FloatingCart() {
   if (totalItems === 0) return null;
 
   return (
-    <Link 
-      href="/cart" 
-      className="fixed right-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col shadow-2xl overflow-hidden rounded-l-xl transition-all hover:scale-105 active:scale-95 group"
+    <Link
+      href="/cart"
+      className="fixed right-4 bottom-6 z-[60] flex flex-col items-center shadow-lg rounded-2xl overflow-hidden hover:scale-105 active:scale-95 transition-all"
     >
-      {/* Top Sidebar Style Cart */}
-      <div className="bg-shopOrange text-white p-3 flex flex-col items-center justify-center min-w-[80px] gap-1">
+      {/* Cart Icon + Count */}
+      <div className="bg-shopOrange text-white px-4 py-2.5 flex flex-col items-center gap-0.5 min-w-[72px]">
         <div className="relative">
-          <ShoppingBag className="w-6 h-6 stroke-[2.5]" />
-          <span className="absolute -top-1 -right-1 bg-white text-shopOrange text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-shopOrange group-hover:scale-110 transition-transform">
+          <ShoppingBag className="w-5 h-5" />
+          <span className="absolute -top-1.5 -right-1.5 bg-white text-shopOrange text-[9px] font-bold w-3.5 h-3.5 flex items-center justify-center rounded-full">
             {totalItems}
           </span>
         </div>
-        <span className="text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
+        <span className="text-[10px] font-semibold whitespace-nowrap">
           {totalItems} {totalItems === 1 ? 'Item' : 'Items'}
         </span>
       </div>
-      
-      {/* Bottom Price section */}
-      <div className="bg-white p-2 border-l border-b border-t border-zinc-100 flex items-center justify-center">
-        <span className="text-shopOrange font-black text-sm">
+
+      {/* Price */}
+      <div className="bg-white px-3 py-1.5 w-full text-center border border-t-0 border-gray-100 rounded-b-2xl">
+        <span className="text-shopOrange font-bold text-xs">
           ৳{totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </span>
       </div>
