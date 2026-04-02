@@ -17,52 +17,90 @@ export interface Product {
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+
+  const discountPercent = product.originalPrice
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : null;
+
   return (
-    <div className="group flex flex-col pt-4 bg-white dark:bg-zinc-950 p-4 rounded-xl border border-transparent hover:border-zinc-200 dark:hover:border-zinc-800 transition-all hover:shadow-xl">
-      <Link href={`/product/${product.id}`} className="relative bg-zinc-100 dark:bg-zinc-900 aspect-[4/5] mb-4 overflow-hidden block rounded-lg">
-        {product.badges && product.badges.map((badge, idx) => (
-          <span
-            key={idx}
-            className="absolute top-2 left-2 z-10 text-[10px] uppercase tracking-wider bg-red-500 text-white px-2 py-1 font-bold rounded"
-          >
-            {badge}
-          </span>
-        ))}
+    <div className="group flex flex-col bg-white border border-shopBorder hover:border-gray-300 transition-all duration-200">
+      
+      {/* Image */}
+      <Link href={`/product/${product.id}`} className="relative aspect-square overflow-hidden block bg-shopGray">
+        
+        {/* Badges */}
+        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+          {discountPercent && (
+            <span className="text-[11px] bg-shopOrange text-white px-2 py-0.5 font-semibold">
+              -{discountPercent}%
+            </span>
+          )}
+          {product.badges && product.badges.map((badge, idx) => (
+            <span key={idx} className="text-[11px] bg-shopDark text-white px-2 py-0.5 font-semibold">
+              {badge}
+            </span>
+          ))}
+        </div>
+
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110 mix-blend-multiply dark:mix-blend-normal"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
+
+        {/* Add to cart overlay on hover */}
+        <div className="absolute bottom-0 left-0 right-0 bg-shopOrange text-white text-center py-2.5 text-xs font-semibold uppercase tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-center gap-2">
+          <ShoppingCart className="w-4 h-4" />
+          Add to Cart
+        </div>
       </Link>
 
-      <div className="flex flex-col flex-1 text-left">
-        <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-1">
+      {/* Info */}
+      <div className="p-3 flex flex-col gap-1">
+        <p className="text-xs text-shopMuted uppercase tracking-wider">
           {product.category}
         </p>
-        <Link href={`/product/${product.id}`} className="text-shopDark dark:text-gray-100 font-bold text-lg mb-1 leading-tight hover:text-shopOrange transition-colors line-clamp-2 min-h-[44px]">
+
+        <Link
+          href={`/product/${product.id}`}
+          className="text-shopText font-medium text-sm leading-snug hover:text-shopOrange transition-colors line-clamp-2 min-h-[40px]"
+        >
           {product.name}
         </Link>
-        <div className="flex items-center text-[#ffc107] mb-3 gap-[1px]">
-          {[1,2,3,4,5].map(star => (
-            <Star key={star} className="w-4 h-4" fill={star <= product.rating ? "currentColor" : "none"} strokeWidth={1} />
+
+        {/* Stars */}
+        <div className="flex items-center gap-0.5 text-yellow-400">
+          {[1, 2, 3, 4, 5].map(star => (
+            <Star
+              key={star}
+              className="w-3 h-3"
+              fill={star <= product.rating ? "currentColor" : "none"}
+              strokeWidth={1.5}
+            />
           ))}
         </div>
-        <div className="flex items-center justify-between gap-2 mt-auto">
-          <div className="flex flex-col">
-            {product.originalPrice && (
-              <span className="text-gray-400 line-through font-medium text-xs">৳{product.originalPrice.toLocaleString()}</span>
-            )}
-            <span className="text-shopDark dark:text-white font-black text-xl">৳{product.price.toLocaleString()}</span>
-          </div>
-          <button
-            onClick={() => addItem(product)}
-            className="p-3 bg-shopOrange text-white rounded-full hover:bg-orange-600 transition-all active:scale-90 shadow-md hover:shadow-lg"
-            aria-label="Add to cart"
-          >
-            <ShoppingCart className="w-5 h-5" />
-          </button>
+
+        {/* Price */}
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-shopText font-bold text-base">
+            ৳{product.price.toLocaleString()}
+          </span>
+          {product.originalPrice && (
+            <span className="text-shopMuted line-through text-sm">
+              ৳{product.originalPrice.toLocaleString()}
+            </span>
+          )}
         </div>
+
+        {/* Mobile add to cart button */}
+        <button
+          onClick={() => addItem(product)}
+          className="mt-2 w-full bg-shopOrange hover:bg-orange-600 text-white py-2 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 sm:hidden"
+        >
+          <ShoppingCart className="w-4 h-4" />
+          Add to Cart
+        </button>
       </div>
     </div>
   );
