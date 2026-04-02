@@ -24,12 +24,10 @@ export default function FeaturedCategories() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <section className="w-full px-0 md:max-w-7xl md:mx-auto md:px-4 py-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
         {categories.map((category, idx) => (
-          <div key={idx} className="relative group overflow-hidden bg-gray-200 aspect-[4/3] md:aspect-auto md:min-h-[280px] flex items-end">
-
-            {/* Background Image */}
+          <div key={idx} className="relative group overflow-hidden bg-gray-200 aspect-[4/3] flex items-end">
             <div className="absolute inset-0 z-0">
               <Image
                 src={category.image}
@@ -39,8 +37,6 @@ export default function FeaturedCategories() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             </div>
-
-            {/* Content */}
             <div className="relative z-10 p-5 w-full">
               <p className="text-white/70 text-xs font-medium uppercase tracking-widest mb-1">
                 {category.subtitle}
@@ -50,7 +46,7 @@ export default function FeaturedCategories() {
               </h3>
               <Link
                 href={category.link}
-                className="inline-flex items-center text-white text-xs font-semibold uppercase tracking-wider border border-white px-4 py-1.5 hover:bg-white hover:text-shopDark transition-colors duration-200"
+                className="inline-flex items-center text-white text-xs font-semibold uppercase tracking-wider border border-white px-5 py-1.5 hover:bg-white hover:text-shopDark transition-colors duration-200 w-fit"
               >
                 Shop Now
               </Link>
