@@ -33,7 +33,7 @@ export default function ProductGallery({ images }: ProductGalleryProps) {
       </div>
 
       {/* Main Image */}
-      <div className="relative w-full aspect-square md:aspect-auto md:flex-1 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden group">
+      <div className="relative w-full aspect-square md:aspect-auto md:flex-1 rounded-2xl bg-white overflow-hidden group">
         <Image
           src={activeImage}
           alt="Main Product Image"
