@@ -24,7 +24,7 @@ export default function FeaturedCategories() {
   ];
 
   return (
-    <section className="w-full px-0 md:max-w-7xl md:mx-auto md:px-4 py-4">
+    <section className="w-full px-3 md:max-w-7xl md:mx-auto md:px-4 py-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
         {categories.map((category, idx) => (
           <div key={idx} className="relative group overflow-hidden bg-gray-200 aspect-[4/3] flex items-end">
