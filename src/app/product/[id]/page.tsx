@@ -107,7 +107,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
           <div className="w-full mt-8">
             <ProductTabs
-              description={product.description?.replace(/<[^>]*>/g, '') || 'No description available.'}
+              description={product.description || 'No description available.'}
               reviewsCount={0}
             >
               <ReviewSection stats={mockReviewStats} />
