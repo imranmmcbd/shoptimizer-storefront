@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { useCart } from '@/lib/CartContext';
 
 export interface Product {
@@ -18,81 +18,80 @@ export interface Product {
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
 
-  const discountPercent = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const savings = product.originalPrice
+    ? product.originalPrice - product.price
     : null;
 
   return (
-    <div className="group flex flex-col bg-white">
+    <div className="group flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
 
-      {/* Image */}
-      <Link href={`/product/${product.id}`} className="relative aspect-square overflow-hidden block bg-shopGray">
+      {/* Image Area */}
+      <Link href={`/product/${product.id}`} className="relative aspect-square block bg-white p-3">
 
-        {/* Badges */}
-        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
-          {discountPercent && (
-            <span className="text-[11px] bg-shopOrange text-white px-2 py-0.5 font-semibold">
-              -{discountPercent}%
+        {/* Badge */}
+        {product.badges && product.badges.length > 0 && (
+          <div className="absolute top-2 left-2 z-10">
+            <span className="text-[11px] bg-red-500 text-white px-2.5 py-1 font-semibold rounded-md flex items-center gap-1">
+              🔥 {product.badges[0]}
             </span>
-          )}
-          {product.badges && product.badges.map((badge, idx) => (
-            <span key={idx} className="text-[11px] bg-shopDark text-white px-2 py-0.5 font-semibold">
-              {badge}
+          </div>
+        )}
+
+        {!product.badges?.length && savings && (
+          <div className="absolute top-2 left-2 z-10">
+            <span className="text-[11px] bg-red-500 text-white px-2.5 py-1 font-semibold rounded-md flex items-center gap-1">
+              🔥 Offered Items
             </span>
-          ))}
-        </div>
+          </div>
+        )}
 
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
         />
       </Link>
 
       {/* Info */}
-      <div className="pt-3 pb-4 flex flex-col gap-1.5 border-b border-shopBorder">
-        <p className="text-xs text-shopMuted uppercase tracking-wider">
-          {product.category}
-        </p>
+      <div className="px-3 pb-3 flex flex-col gap-2">
 
+        {/* Product Name */}
         <Link
           href={`/product/${product.id}`}
-          className="text-shopText font-medium text-sm leading-snug hover:text-shopOrange transition-colors line-clamp-2 min-h-[40px]"
+          className="text-shopDark font-bold text-sm leading-snug hover:text-shopOrange transition-colors line-clamp-2 min-h-[40px]"
         >
           {product.name}
         </Link>
 
-        {/* Stars */}
-        <div className="flex items-center gap-0.5 text-yellow-400">
-          {[1, 2, 3, 4, 5].map(star => (
-            <Star
-              key={star}
-              className="w-3 h-3"
-              fill={star <= product.rating ? "currentColor" : "none"}
-              strokeWidth={1.5}
-            />
-          ))}
-        </div>
-
         {/* Price */}
-        <div className="flex items-center gap-2 mt-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-shopOrange font-bold text-base">
+            ৳{product.price.toLocaleString()}
+          </span>
           {product.originalPrice && (
-            <span className="text-shopMuted line-through text-sm">
+            <span className="text-gray-400 line-through text-sm">
               ৳{product.originalPrice.toLocaleString()}
             </span>
           )}
-          <span className="text-shopText font-bold text-base">
-            ৳{product.price.toLocaleString()}
-          </span>
         </div>
+
+        {/* Save Badge */}
+        {savings && savings > 0 && (
+          <div>
+            <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded font-semibold">
+              Save ৳{savings.toLocaleString()}
+            </span>
+          </div>
+        )}
 
         {/* Add to Cart Button */}
         <button
           onClick={() => addItem(product)}
-          className="mt-2 w-full border border-shopOrange text-shopOrange hover:bg-shopOrange hover:text-white py-2 text-xs font-semibold uppercase tracking-wider transition-colors"
+          className="mt-1 w-full border border-shopOrange text-shopOrange hover:bg-shopOrange hover:text-white rounded-full py-2 text-xs font-semibold transition-colors flex items-center justify-center gap-2"
         >
-          Add to cart
+          <ShoppingCart className="w-3.5 h-3.5" />
+          Add To Cart
         </button>
       </div>
     </div>
