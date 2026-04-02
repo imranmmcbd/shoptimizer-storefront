@@ -132,18 +132,17 @@ export default function CheckoutPage() {
         </h1>
 
         {/* Trust Badges */}
-        <div className="flex items-center gap-4 bg-white border border-shopBorder rounded-xl p-3 mb-6 w-fit">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-shopGreen" />
-            <span className="text-xs font-medium text-shopText">Secure Payment</span>
-          </div>
-          <div className="w-px h-4 bg-shopBorder"></div>
-          <div className="flex items-center gap-2">
-            <Truck className="w-4 h-4 text-shopOrange" />
-            <span className="text-xs font-medium text-shopText">Cash on Delivery</span>
-          </div>
-        </div>
-
+<div className="flex items-center justify-center gap-8 bg-white border border-shopBorder rounded-xl p-3 mb-6 w-full">
+  <div className="flex items-center gap-2">
+    <ShieldCheck className="w-4 h-4 text-shopGreen" />
+    <span className="text-sm font-medium text-shopText">Secure Payment</span>
+  </div>
+  <div className="w-px h-5 bg-shopBorder"></div>
+  <div className="flex items-center gap-2">
+    <Truck className="w-4 h-4 text-shopOrange" />
+    <span className="text-sm font-medium text-shopText">Cash on Delivery</span>
+  </div>
+</div>
         {/* Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-7">
