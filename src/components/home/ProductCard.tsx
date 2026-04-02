@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { useCart } from '@/lib/CartContext';
 
 export interface Product {
@@ -23,11 +23,11 @@ export default function ProductCard({ product }: { product: Product }) {
     : null;
 
   return (
-    <div className="group flex flex-col bg-white border border-shopBorder hover:border-gray-300 transition-all duration-200">
-      
+    <div className="group flex flex-col bg-white">
+
       {/* Image */}
       <Link href={`/product/${product.id}`} className="relative aspect-square overflow-hidden block bg-shopGray">
-        
+
         {/* Badges */}
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
           {discountPercent && (
@@ -48,16 +48,10 @@ export default function ProductCard({ product }: { product: Product }) {
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-
-        {/* Add to cart overlay on hover */}
-        <div className="absolute bottom-0 left-0 right-0 bg-shopOrange text-white text-center py-2.5 text-xs font-semibold uppercase tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center justify-center gap-2">
-          <ShoppingCart className="w-4 h-4" />
-          Add to Cart
-        </div>
       </Link>
 
       {/* Info */}
-      <div className="p-3 flex flex-col gap-1">
+      <div className="pt-3 pb-4 flex flex-col gap-1.5 border-b border-shopBorder">
         <p className="text-xs text-shopMuted uppercase tracking-wider">
           {product.category}
         </p>
@@ -83,23 +77,22 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Price */}
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-shopText font-bold text-base">
-            ৳{product.price.toLocaleString()}
-          </span>
           {product.originalPrice && (
             <span className="text-shopMuted line-through text-sm">
               ৳{product.originalPrice.toLocaleString()}
             </span>
           )}
+          <span className="text-shopText font-bold text-base">
+            ৳{product.price.toLocaleString()}
+          </span>
         </div>
 
-        {/* Mobile add to cart button */}
+        {/* Add to Cart Button */}
         <button
           onClick={() => addItem(product)}
-          className="mt-2 w-full bg-shopOrange hover:bg-orange-600 text-white py-2 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 sm:hidden"
+          className="mt-2 w-full border border-shopOrange text-shopOrange hover:bg-shopOrange hover:text-white py-2 text-xs font-semibold uppercase tracking-wider transition-colors"
         >
-          <ShoppingCart className="w-4 h-4" />
-          Add to Cart
+          Add to cart
         </button>
       </div>
     </div>
