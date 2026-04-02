@@ -45,7 +45,7 @@ export function Footer() {
             <li><Link href="/contact" className="hover:text-shopOrange transition-colors">Contact</Link></li>
           </ul>
         </div>
-        
+
         {/* Newsletter */}
         <div>
           <h4 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">In the Know</h4>
@@ -62,7 +62,7 @@ export function Footer() {
           </form>
         </div>
       </div>
-      
+
       {/* Bottom Footer */}
       <div className="max-w-7xl mx-auto px-4 pt-8 border-t border-zinc-800 flex flex-col md:flex-row items-center justify-between text-sm text-gray-500 gap-4">
         <p>© 2026 Shoptimizer Storefront. Built entirely with Next.js.</p>
