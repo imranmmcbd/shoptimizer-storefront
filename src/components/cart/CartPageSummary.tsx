@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/lib/CartContext";
-import { ArrowRight, CreditCard, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck, Truck } from "lucide-react";
 import Link from "next/link";
 
 export default function CartPageSummary() {
@@ -11,7 +11,7 @@ export default function CartPageSummary() {
 
   return (
     <div className="bg-white p-5 rounded-xl border border-shopBorder lg:sticky lg:top-24 h-fit">
-      
+
       <h3 className="text-sm font-bold text-shopDark uppercase tracking-wider mb-4 pb-3 border-b border-shopBorder">
         Cart Totals
       </h3>
@@ -59,8 +59,8 @@ export default function CartPageSummary() {
           <span className="text-xs text-shopMuted">Secure Payment Guaranteed</span>
         </div>
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 bg-blue-50 rounded-full">
-            <CreditCard className="w-3.5 h-3.5 text-shopBlue" />
+          <div className="p-1.5 bg-orange-50 rounded-full">
+            <Truck className="w-3.5 h-3.5 text-shopOrange" />
           </div>
           <span className="text-xs text-shopMuted">Cash On Delivery Available</span>
         </div>
